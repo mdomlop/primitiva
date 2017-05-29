@@ -12,5 +12,5 @@ Solo los tengo aquí porque en algún sitio tengo que guardarlos :-)
 
 No obstante pueden resultar entretenidos para probar lo difícil que es que te pueda tocar la lotería.
 
-Si sigues interesado en probarlos lee el archivo [USAGE](https://github.com/manueldl/primitiva/blob/master/USAGE),
+Si sigues interesado en probarlos lee el archivo [USAGE](https://github.com/mdomlop/primitiva/blob/master/USAGE),
 con el que podrás hacerte una idea poco precisa del funcionamiento.
