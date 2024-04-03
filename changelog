@@ -1,0 +1,21 @@
+2024-04-03: version 0.3:
+    + Mejorado el código.
+    + Opciones de línea de comando.
+    + Mejorada salida del programa.
+2012.10.17:7.43 version 0.2:
+    +Mejorado código. Basado en una versión en python.
+    +Comprobación que la entrada sean enteros dentro del rango especificado.
+    * TODO:
+    -Que reconozca 5 aciertos + reintegro (es premio).
+    -Que muestre el intento en el que se consigue cierto resultado.
+    -Identifique los premios: 1ª categoría, 2ª...
+    -Algunas otras cosas...
+2011.12.15 version 0.1:
+    +Funcionalidad básica. Imprime resultados.
+    * TODO:
+    -Mejorar el código.
+    -Comprobación que la entrada sean enteros dentro del rango especificado.
+    -Que reconozca 5 aciertos + reintegro (es premio).
+    -Que muestre el intento en el que se consigue cierto resultado.
+    -Identifique los premios: 1ª categoría, 2ª...
+    -Algunas otras cosas...

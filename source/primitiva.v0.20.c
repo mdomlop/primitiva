@@ -35,16 +35,31 @@
         -Algunas otras cosas...
 */
 
+
+#define PROGRAM     "Primitiva"
+#define EXECUTABLE  "primitiva"
+#define DESCRIPTION "Spanish Primitiva game emulator."
+#define VERSION     "0.20"
+#define URL         "https://github.com/mdomlop/primitiva"
+#define LICENSE     "GPLv3+"
+#define AUTHOR      "Manuel Domínguez López"
+#define NICK        "mdomlop"
+#define MAIL        "zqbzybc@tznvy.pbz"
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>  /* isdigit() */
+#include <time.h>  /* time() */
+#include <unistd.h> /* getpid() */
 
 #define BOLAS 49
 #define JUGADAS 6
 #define randomize ( srand(time(NULL) + getpid()) )
 #define random(limit) ( rand() % (limit) )
 
-#define DEBUG 0 // Si no es 0 muestra información adicional.
+#define DEBUG 0 /* Si no es 0 muestra información adicional. */
 
 int bombo[BOLAS];
 int mibombo[BOLAS];
@@ -54,8 +69,8 @@ int mipremio[JUGADAS];
 
 int complementario, reintegro, mireintegro;
 
-int resultado[17];/* 'resultado' contendrá: premio, reintegro, complementario;
-mipremio, mireintegro; minimo; intentos */
+int resultado[18]; /* 'resultado' contendrá: premio, reintegro,
+                      complementario; mipremio, mireintegro; minimo; intentos */
 
 
 void mk_array(int array[], int arrayc)
@@ -67,8 +82,8 @@ void mk_array(int array[], int arrayc)
 
 void print_array(int array[], int arrayc)
 {
-    printf("[");
     short i;
+    printf("[");
     for (i = 0; i < arrayc; i++)
     {
         printf("%d", array[i]);
@@ -78,26 +93,26 @@ void print_array(int array[], int arrayc)
 }
 
 
-void unsort_array(int array[], int arrayc)
+void unsort_array(int array[])
 {
     int i;
     int k;
     int num;
-    int aux[arrayc];
+    int aux[BOLAS];
 
 
-    for (i = 0; i < arrayc; i++)
+    for (i = 0; i < BOLAS; i++)
     {
-        num = rand() % (arrayc - i); /* El número que se saca (índice de array) */
+        num = rand() % (BOLAS - i); /* El número que se saca (índice de array) */
         aux[i] = array[num];
 
-        for ( k = num; k < arrayc - 1 ; k++ )
+        for ( k = num; k < BOLAS - 1 ; k++ )
         {
             array[k] = array[k+1];
         }
 
     }
-    for (i = 0; i < arrayc; i++) array[i] = aux[i];
+    for (i = 0; i < BOLAS; i++) array[i] = aux[i];
 }
 
 
@@ -127,7 +142,7 @@ void get_array(int new_array[], int array[], int get)
 
 void informa(void)
 {
-//  """Muestra información, ayuda y forma de uso del programa."""
+/*  """Muestra información, ayuda y forma de uso del programa.""" */
 
     printf("\n");
     printf("Uso del programa:\n");
@@ -148,8 +163,8 @@ int esentero (char * s)
     for ( c = 0; c < sc; c ++ )
     {
         if ( (c == 0) && (s[c] == '-') )
-        // Para dar una respuesta correcta a números negativos.
-        // Si no podría decir: -4 no es un número entero.
+        /* Para dar una respuesta correcta a números negativos.
+           Si no podría decir: -4 no es un número entero. */
         {
             continue;
         }
@@ -172,18 +187,19 @@ void vapuesta(int array[], int arrayc)
 /*  """Comprueba que la apuesta sea válida
     ( 6 números enteros diferentes entre 1 y 49).""" */
     short x;
+    short c = 0; /* Contador de repeticiones. */
+    short r;
+
     for (x = 0 ; x < arrayc; x++)
     {
-        // Si está entre 1 y 49:
+        /* Si está entre 1 y 49: */
         if ( (array[x] < 1) || (array[x] > 49) )
         {
             fprintf(stderr, "%d no es un número del 1 al 49.\n", array[x]);
             exit(1);
         }
 
-        // Si hay alguno repetido:
-        short c = 0; // Contador de repeticiones.
-        short r;
+        /* Si hay alguno repetido: */
         for (r = 0; r < arrayc; r++)
         {
             if (array[x] == array[r])
@@ -202,8 +218,8 @@ void vapuesta(int array[], int arrayc)
 
 void vminimo( int x)
 {
-    // """Comprueba que el número mínimo de aciertos sea válido
-    // (un entero entre 0 y 6)"""
+    /* """Comprueba que el número mínimo de aciertos sea válido
+       (un entero entre 0 y 6)""" */
     if ( (x < 0) || (x > 6) )
     {
         fprintf(stderr, "El número proporcionado como valor mínimo de aciertos a mostrar no es válido.\n%d no es un número del 0 al 6.\n", x );
@@ -214,8 +230,8 @@ void vminimo( int x)
 
 void vintentos(int x)
 {
-    // """Comprueba que el número de intentos solicitado sea válido
-    // (un entero mayor que 0)"""
+    /* """Comprueba que el número de intentos solicitado sea válido
+       (un entero mayor que 0)""" */
     if (x < 0)
     {
         fprintf(stderr, "El valor proporcionado como número de intentos no es válido.\n%d no es un número mayor que 0.\n", x );
@@ -226,16 +242,16 @@ void vintentos(int x)
 
 void sorteo(void)
 {
-    // """Saca la combinación ganadora."""
-    // No funciona: bombo = random.shuffle( list( range( 1, 50 ) ) )
-    mk_array(bombo, BOLAS); // Entran los números del 1 al 49.
-    unsort_array(bombo, BOLAS); // Ya están desordenados.
-    get_array(premio, bombo, JUGADAS); // Extraemos el premio.
+    /* """Saca la combinación ganadora."""
+       No funciona: bombo = random.shuffle( list( range( 1, 50 ) ) ) */
+    mk_array(bombo, BOLAS); /* Entran los números del 1 al 49. */
+    unsort_array(bombo); /* Ya están desordenados. */
+    get_array(premio, bombo, JUGADAS); /* Extraemos el premio. */
 
-    // El reintegro es un número aleatorio del 0 al 9. Lo elige la máquina.
-    // Sale de un bombo aparte del del premio.
+    /* El reintegro es un número aleatorio del 0 al 9. Lo elige la máquina.
+       Sale de un bombo aparte del del premio. */
     reintegro = random(10);
-    // Y el complementario:
+    /* Y el complementario: */
     complementario = bombo[JUGADAS];
 
     resultado[0] = premio[0];
@@ -251,11 +267,11 @@ void sorteo(void)
 
 void jmaq(void)
 {
-    //  """Devuelve una lista con los números a jugar elegidos por la máquina."""
-    mk_array(mibombo, BOLAS); // Empezamos con una lista ordenada. Para no desordenarla 2 veces.
-    unsort_array(mibombo, BOLAS); // Y la desordenamos.
-    mireintegro = random(10); // El mío también me lo da la máquina.
-    // Sacamos la combinación ganadora. Índices del 0 al 6: 7 números.
+    /*  """Devuelve una lista con los números a jugar elegidos por la máquina.""" */
+    mk_array(mibombo, BOLAS); /* Empezamos con una lista ordenada. Para no desordenarla 2 veces. */
+    unsort_array(mibombo); /* Y la desordenamos. */
+    mireintegro = random(10); /* El mío también me lo da la máquina. */
+    /* Sacamos la combinación ganadora. Índices del 0 al 6: 7 números. */
     get_array(mipremio, mibombo, JUGADAS);
 
     resultado[8] = mipremio[0];
@@ -270,11 +286,11 @@ void jmaq(void)
 
 void jusu(char * argv[])
 {
-    //"""Devuelve una lista con los números a jugar elegidos por el usuario."""
-    reintegro = random(10); // El mío también me lo da la máquina.
-
-    //get_array(mipremio, argv, JUGADAS); // Debe coger los 6 primeros elementos de argv.
+    /* """Devuelve una lista con los números a jugar elegidos por el usuario.""" */
     short i;
+    reintegro = random(10); /* El mío también me lo da la máquina. */
+
+    /*get_array(mipremio, argv, JUGADAS); // Debe coger los 6 primeros elementos de argv. */
     for (i = 1; i < 7; i++)
     {
         esentero(argv[i]);
@@ -295,8 +311,8 @@ void jusu(char * argv[])
 
 void earg(int argc, char * argv[])
 {
-    // """Evalúa la línea de comandos"""
-    if ( argc  == 1 ) // 0 argumentos: Juega la máquina automáticamente.
+    /* """Evalúa la línea de comandos""" */
+    if ( argc  == 1 ) /* 0 argumentos: Juega la máquina automáticamente. */
     {
         resultado[16] = 0; /* mínimo */
         resultado[17] = 1; /* intentos */
@@ -304,11 +320,11 @@ void earg(int argc, char * argv[])
         sorteo();
         jmaq();
     }
-    else if ( argc  == 2 ) // 1 argumento: intentos. Jugando la máquina
+    else if ( argc  == 2 ) /* 1 argumento: intentos. Jugando la máquina */
     {
         resultado[16] = 0; /* mínimo */
 
-        esentero(argv[1]); // Comprobar si es entero.
+        esentero(argv[1]); /* Comprobar si es entero. */
         resultado[17] = atoi(argv[1]);
 
         vintentos(resultado[17]);
@@ -316,10 +332,10 @@ void earg(int argc, char * argv[])
         sorteo();
         jmaq();
     }
-    else if ( argc == 3 ) // 2 argumentos: mini e intentos. Jugando la máquina
+    else if ( argc == 3 ) /* 2 argumentos: mini e intentos. Jugando la máquina */
     {
-        esentero(argv[1]); // Comprobar si es entero.
-        esentero(argv[2]); // Comprobar si es entero.
+        esentero(argv[1]); /* Comprobar si es entero. */
+        esentero(argv[2]); /* Comprobar si es entero. */
 
         resultado[16]= atoi(argv[1]);
         resultado[17] = atoi(argv[2]);
@@ -330,7 +346,7 @@ void earg(int argc, char * argv[])
         sorteo();
         jmaq();
     }
-    else if ( argc == 7) // 6 argumentos: mis 6 números.
+    else if ( argc == 7) /* 6 argumentos: mis 6 números. */
     {
         resultado[16] = 0;
         resultado[17] = 1;
@@ -338,11 +354,11 @@ void earg(int argc, char * argv[])
         sorteo();
         jusu(argv);
     }
-    else if ( argc == 8) // 7 argumentos: mis 6 números y los intentos. Imprime todo.
+    else if ( argc == 8) /* 7 argumentos: mis 6 números y los intentos. Imprime todo. */
     {
         resultado[16] = 0;
 
-        esentero(argv[7]); // Comprobar si es entero.
+        esentero(argv[7]); /* Comprobar si es entero. */
         resultado[17] = atoi(argv[7]);
 
         vintentos(resultado[17]);
@@ -350,10 +366,10 @@ void earg(int argc, char * argv[])
         sorteo();
         jusu(argv);
     }
-    else if ( argc == 9 ) // 8 argumentos: mis 6 números y mini e intentos.
+    else if ( argc == 9 ) /* 8 argumentos: mis 6 números y mini e intentos. */
     {
-        esentero(argv[7]); // Comprobar si es entero.
-        esentero(argv[8]); // Comprobar si es entero.
+        esentero(argv[7]); /* Comprobar si es entero. */
+        esentero(argv[8]); /* Comprobar si es entero. */
 
         resultado[16] = atoi(argv[7]);
         resultado[17] = atoi(argv[8]);
@@ -374,13 +390,12 @@ void earg(int argc, char * argv[])
 
 void jugar(int argc, char * argv[])
 {
-    // """Compara las combinaciones. Imprime resultados."""
-    earg(argc, argv); // Parece necesario para que coja los valores minimo e intentos. INEFICIENTE.
+    /* """Compara las combinaciones. Imprime resultados.""" */
 
     short minimo = resultado[16];
     int intentos = resultado[17];
-    int intentosc = intentos; // Este valor será usado como contador y será modificado.
-    int satisfaccion = 0; // Este valor se usa para contar el número de resultados satisfactorios.
+    int intentosc = intentos; /* Este valor será usado como contador y será modificado. */
+    int satisfaccion = 0; /* Este valor se usa para contar el número de resultados satisfactorios. */
 
     int aciertos[JUGADAS];
     int aciertosc;
@@ -392,8 +407,12 @@ void jugar(int argc, char * argv[])
     char caux[20];
     char raux[20];
 
+    earg(argc, argv); /* Parece necesario para que coja los valores minimo e intentos. INEFICIENTE. */
+
     while (intentosc > 0)
     {
+        short apuesta;
+
         strcpy(ccad, "");
         strcpy(rcad, "");
         strcpy(acad, "");
@@ -402,16 +421,14 @@ void jugar(int argc, char * argv[])
         aciertosc = 0;
 
         earg(argc, argv);
-
-        short apuesta;
-        for (apuesta = 0; apuesta < JUGADAS; apuesta++) // Para cada número que he jugado...
+        for (apuesta = 0; apuesta < JUGADAS; apuesta++) /* Para cada número que he jugado... */
         {
             short resultado;
-            for (resultado = 0; resultado < JUGADAS; resultado++) // Comprobar si está en la combinación ganadora.
+            for (resultado = 0; resultado < JUGADAS; resultado++) /* Comprobar si está en la combinación ganadora. */
             {
                 if (mipremio[apuesta] == premio[resultado])
                 {
-                    aciertos[aciertosc] = mipremio[apuesta]; // Nueva lista aciertos mete las apuestas que coinciden con los resultados.
+                    aciertos[aciertosc] = mipremio[apuesta]; /* Nueva lista aciertos mete las apuestas que coinciden con los resultados. */
                     aciertosc++;
                 }
             }
@@ -430,12 +447,12 @@ void jugar(int argc, char * argv[])
             strcat(rcad, raux);
         }
 
-        // Ordenamos las listas de resultados:
+        /* Ordenamos las listas de resultados: */
         sort_insert_array(aciertos, aciertosc);
         sort_insert_array(premio, JUGADAS);
         sort_insert_array(mipremio, JUGADAS);
 
-        if (DEBUG) // Si es 0 muestra información adicional.
+        if (DEBUG) /* Si es 0 muestra información adicional. */
         {
             printf("\nPremio: ");
             print_array(premio, JUGADAS);
@@ -448,7 +465,7 @@ void jugar(int argc, char * argv[])
             printf("\n\n");
         }
 
-        // Imprimir, evaluando si el número de aciertos es plural:
+        /* Imprimir, evaluando si el número de aciertos es plural: */
         if (aciertosc == 1)
         {
             strcpy(acad, "acierto:");
