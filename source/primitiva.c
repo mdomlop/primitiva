@@ -347,12 +347,7 @@ int main(int argc, char *argv[])
 		}
 
     int nonopt = argc - optind;
-	if ((nonopt < 0) || (nonopt > 6))  // Max non-option argumets are 0
-	{
-		fprintf (stderr, "Sorry. Too much arguments: %d\n", (argc - optind));
-		return 1;
-	}
-	else if (nonopt)
+	if (nonopt == NAPUESTAS)  // Max non-option argumets
     {
         short idx;
         for (int i=0; i<NAPUESTAS; i++)
@@ -364,7 +359,13 @@ int main(int argc, char *argv[])
         vapuesta();
         apostar(0);
     }
-    else apostar(1);  /* Automático */
+    else if (nonopt == 0) apostar(1);/* Automático */
+    else
+    {
+		fprintf (stderr, "Necesito 0 o 6 números para jugar."
+        "He recibido: %d\n", nonopt);
+		return 1;
+	}
 
 
     for (int i=0; i<intentos; i++)
